@@ -42,7 +42,7 @@ function addTodosHover() {
         todoItemElement.removeEventListener('mouseenter', todoItemElement._mouseenterHandler);
         const mouseenterHandler = () => {
             if (document.getElementById('add-todo-form')) return;
-            const todosArray = JSON.parse(localStorage.getItem('vrcafe-todos') || '[]');
+            const todosArray = JSON.parse(localStorage.getItem('todos') || '[]');
             const todoId = todoItemElement.getAttribute('data-id');
             const todoObject = todosArray.find(todo => todo.id === todoId);
             if (todoTitleElement) {
@@ -71,11 +71,11 @@ function addTodosHover() {
                     const deleteButtonElement = actionsElement.querySelector('.todo-delete');
                     if (completeButtonElement) {
                         completeButtonElement.addEventListener('click', () => {
-                            const todosArray = JSON.parse(localStorage.getItem('vrcafe-todos') || '[]');
+                            const todosArray = JSON.parse(localStorage.getItem('todos') || '[]');
                             const todoIndex = todosArray.findIndex(todo => todo.id === todoObject.id);
                             if (todoIndex !== -1) {
                                 todosArray[todoIndex].isComplete = !todosArray[todoIndex].isComplete;
-                                localStorage.setItem('vrcafe-todos', JSON.stringify(todosArray));
+                                localStorage.setItem('todos', JSON.stringify(todosArray));
                                 loadTodos();
                                 addTodosHover();
                                 const itemElement = document.querySelector(`.todo-item[data-id='${todoObject.id}']`);
@@ -86,9 +86,9 @@ function addTodosHover() {
                     if (deleteButtonElement) {
                         deleteButtonElement.addEventListener('click', () => {
                             if (confirm('Are you sure you want to delete this todo?')) {
-                                let todosArray = JSON.parse(localStorage.getItem('vrcafe-todos') || '[]');
+                                let todosArray = JSON.parse(localStorage.getItem('todos') || '[]');
                                 todosArray = todosArray.filter(todo => todo.id !== todoObject.id);
-                                localStorage.setItem('vrcafe-todos', JSON.stringify(todosArray));
+                                localStorage.setItem('todos', JSON.stringify(todosArray));
                                 loadTodos();
                                 addTodosHover();
                                 if (todoTitleElement) todoTitleElement.textContent = 'Item';
@@ -110,14 +110,14 @@ function addTodosHover() {
 
 // LocalStorage
 function saveTodo(todo) {
-    const todos = JSON.parse(localStorage.getItem('vrcafe-todos') || '[]');
+    const todos = JSON.parse(localStorage.getItem('todos') || '[]');
     todos.push(todo);
-    localStorage.setItem('vrcafe-todos', JSON.stringify(todos));
+    localStorage.setItem('todos', JSON.stringify(todos));
 }
 
 function loadTodos() {
     document.querySelectorAll('.todo-category .todo-list').forEach(list => list.innerHTML = '');
-    const todos = JSON.parse(localStorage.getItem('vrcafe-todos') || '[]');
+    const todos = JSON.parse(localStorage.getItem('todos') || '[]');
     todos.forEach(todo => {
         const todoListCategory = document.querySelector(`.todo-category[data-category='${todo.category}'] .todo-list`);
         if (todoListCategory) {
